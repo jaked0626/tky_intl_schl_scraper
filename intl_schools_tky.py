@@ -60,15 +60,18 @@ def crawl_main():
     school_panels = get_school_panels(page_soup)
 
     for school in school_panels:
-        name, link = extract_schoolname_link(school)
-        driver.get(link)
-        sleep(3)
-        school_soup = BeautifulSoup(driver.page_source, "html.parser")
-        fee_lb, fee_ub, student_body = extract_school_info(school_soup)
-        fee_range = f"{fee_lb}~{fee_ub}".replace(",", "")
-        # write to csv file 
-        with open("./crawled_data/intl_school_students.csv", "a") as f:
-            f.write(",".join([name, fee_range, student_body]) + "\n")
+        try:
+            name, link = extract_schoolname_link(school)
+            driver.get(link)
+            sleep(3)
+            school_soup = BeautifulSoup(driver.page_source, "html.parser")
+            fee_lb, fee_ub, student_body = extract_school_info(school_soup)
+            fee_range = f"{fee_lb}~{fee_ub}".replace(",", "")
+            # write to csv file 
+            with open("./crawled_data/intl_school_students.csv", "a") as f:
+                f.write(",".join([name, fee_range, student_body]) + "\n")
+        except Exception:
+            continue
         
 if __name__ == "__main__":
     crawl_main()
