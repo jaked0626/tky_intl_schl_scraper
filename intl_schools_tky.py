@@ -34,7 +34,7 @@ def extract_schoolname_link(school_element):
     if a_element:
         link = a_element['href']
         # Get the text
-        name = a_element.text
+        name = a_element.text.replace(',', '')
     
     return name, link
 
@@ -43,7 +43,7 @@ def extract_school_info(soup):
     fee_lb = currencies[0].text
     fee_ub = currencies[1].text
     table_soup = soup.find("table", class_="table background-color dark questionnaire-table")
-    student_body = table_soup.find("p").text
+    student_body = table_soup.find("p").text.replace(',', '')
     return fee_lb, fee_ub, student_body
 
 def crawl_main():
